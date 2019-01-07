@@ -40,15 +40,28 @@ class Manager implements IManager {
 		$this->registeredExtraPermissionsMap = array();
 	}
 
-	public function registerExtraPermission($app, $permission, $permissionLabel, $permissionNotification) {
+	/**
+	 * @inheritdoc
+	 */
+	public function registerExtraPermission($app, $permission, $permissionLabel, $permissionNotification, $nodeTypeFilter, $shareTypeFilter) {
 		$this->registeredExtraPermissionsMap[$app][$permission]['label'] = $permissionLabel;
 		$this->registeredExtraPermissionsMap[$app][$permission]['notification'] = $permissionNotification;
+		$this->registeredExtraPermissionsMap[$app][$permission]['nodeTypeFilter'] = $nodeTypeFilter;
+		$this->registeredExtraPermissionsMap[$app][$permission]['shareTypeFilter'] = $shareTypeFilter;
+
+		return true;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getExtraPermissionApps() {
 		return \array_keys($this->registeredExtraPermissionsMap);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getExtraPermissionKeys($app) {
 		if (array_key_exists($app, $this->registeredExtraPermissionsMap)) {
 			return \array_keys($this->registeredExtraPermissionsMap[$app]);
@@ -56,6 +69,9 @@ class Manager implements IManager {
 		return [];
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getExtraPermissionLabel($app, $permission) {
 		if (array_key_exists($app, $this->registeredExtraPermissionsMap) &&
 			array_key_exists($permission, $this->registeredExtraPermissionsMap[$app])) {
@@ -64,6 +80,9 @@ class Manager implements IManager {
 		return null;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getExtraPermissionNotification($app, $permission) {
 		if (array_key_exists($app, $this->registeredExtraPermissionsMap) &&
 			array_key_exists($permission, $this->registeredExtraPermissionsMap[$app])) {

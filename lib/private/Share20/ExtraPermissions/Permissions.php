@@ -20,29 +20,49 @@
  */
 namespace OC\Share20\ExtraPermissions;
 
-class Permissions {
+use OCP\Share\ExtraPermissions\IPermissions;
+
+class Permissions implements IPermissions {
 
 	/** @var array */
 	private $permissions;
 
 	public function __construct() {
-		$this->permissions = json_decode('{}', true);
+		$this->permissions = [];
 	}
 
-	public function addExtraPermission($app, $permission) {
+	/**
+	 * @inheritdoc
+	 */
+	public function addPermission($app, $permission) {
 		return $this->permissions[$app][$permission] = true;
 	}
 
-	public function hasExtraPermission($app, $permission) {
+	/**
+	 * @inheritdoc
+	 */
+	public function hasPermission($app, $permission) {
 		return array_key_exists($app, $this->permissions) &&
 			array_key_exists($permission, $this->permissions[$app]);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function serialize() {
+		if (empty($this->permissions)) {
+			return null;
+		}
 		return json_encode($this->permissions);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function load($extraPermissions) {
-		$this->permissions = json_decode($extraPermissions, true);
+		if (!is_null($extraPermissions)) {
+			$this->permissions = json_decode($extraPermissions, true);
+		}
+		return true;
 	}
 }

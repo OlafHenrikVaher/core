@@ -100,13 +100,10 @@ class ViewOnlyPlugin extends ServerPlugin {
 			// Extract extra permissions
 			/** @var \OCA\Files_Sharing\SharedStorage $storage */
 			$share = $storage->getShare();
-			if (!($share instanceof \OC\Share20\Share)) {
-				return true;
-			}
 			$extraPermissions = $share->getExtraPermissions();
 
 			// Restrict view-only to shares without update permission (read-only) and when view-only is enabled
-			if (!$file->isUpdateable() && $extraPermissions->hasExtraPermission('dav', 'view-only')) {
+			if (!$file->isUpdateable() && $extraPermissions->hasPermission('dav', 'view-only')) {
 				throw new Forbidden('File is in secure-view mode and cannot be directly downloaded.');
 			}
 		} catch (NotFound $e) {
@@ -122,7 +119,9 @@ class ViewOnlyPlugin extends ServerPlugin {
 			'dav',
 			'view-only',
 			'enable view only',
-			'With read-only permission set for the file, download will be disabled. Only viewing will be allowed'
+			'With read-only permission set for the file, download will be disabled. Only viewing will be allowed',
+			[\OCP\Share::NODE_TYPE_FILE],
+			[\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP]
 		);
 	}
 }

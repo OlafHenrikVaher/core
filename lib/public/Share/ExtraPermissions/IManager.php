@@ -29,13 +29,16 @@ namespace OCP\Share\ExtraPermissions;
 interface IManager {
 
 	/**
-	 * @param $app
-	 * @param $permission
-	 * @param $permissionLabel
-	 * @param $permissionNotification
+	 * @param string $app
+	 * @param string $permission
+	 * @param string $permissionLabel
+	 * @param string $permissionNotification
+	 * @param string[] $nodeTypeFilter
+	 * @param int[] $shareTypeFilter
+	 * @return bool
 	 * @since 11.0.0
 	 */
-	public function registerExtraPermission($app, $permission, $permissionLabel, $permissionNotification);
+	public function registerExtraPermission($app, $permission, $permissionLabel, $permissionNotification, $nodeTypeFilter, $shareTypeFilter);
 
 	/**
 	 * @return string[]

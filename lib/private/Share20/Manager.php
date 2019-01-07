@@ -643,7 +643,7 @@ class Manager implements IManager {
 		$run = true;
 		$error = '';
 		$preHookData = [
-			'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+			'itemType' => $share->getNode() instanceof \OCP\Files\File ? \OCP\Share::NODE_TYPE_FILE : \OCP\Share::NODE_TYPE_FOLDER,
 			'itemSource' => $share->getNode()->getId(),
 			'shareType' => $share->getShareType(),
 			'uidOwner' => $share->getSharedBy(),
@@ -670,7 +670,7 @@ class Manager implements IManager {
 
 		// Post share hook
 		$postHookData = [
-			'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+			'itemType' => $share->getNode() instanceof \OCP\Files\File ? \OCP\Share::NODE_TYPE_FILE : \OCP\Share::NODE_TYPE_FOLDER,
 			'itemSource' => $share->getNode()->getId(),
 			'shareType' => $share->getShareType(),
 			'uidOwner' => $share->getSharedBy(),
@@ -876,7 +876,7 @@ class Manager implements IManager {
 		$update = false;
 		if ($expirationDateUpdated === true) {
 			\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', [
-				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+				'itemType' => $share->getNode() instanceof \OCP\Files\File ? \OCP\Share::NODE_TYPE_FILE : \OCP\Share::NODE_TYPE_FOLDER,
 				'itemSource' => $share->getNode()->getId(),
 				'date' => $share->getExpirationDate(),
 				'uidOwner' => $share->getSharedBy(),
@@ -888,7 +888,7 @@ class Manager implements IManager {
 
 		if ($share->getPassword() !== $originalShare->getPassword()) {
 			\OC_Hook::emit('OCP\Share', 'post_update_password', [
-				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+				'itemType' => $share->getNode() instanceof \OCP\Files\File ? \OCP\Share::NODE_TYPE_FILE : \OCP\Share::NODE_TYPE_FOLDER,
 				'itemSource' => $share->getNode()->getId(),
 				'uidOwner' => $share->getSharedBy(),
 				'token' => $share->getToken(),
@@ -905,7 +905,7 @@ class Manager implements IManager {
 				$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy());
 			}
 			\OC_Hook::emit('OCP\Share', 'post_update_permissions', [
-				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+				'itemType' => $share->getNode() instanceof \OCP\Files\File ? \OCP\Share::NODE_TYPE_FILE : \OCP\Share::NODE_TYPE_FOLDER,
 				'itemSource' => $share->getNode()->getId(),
 				'shareType' => $share->getShareType(),
 				'shareWith' => $share->getSharedWith(),
